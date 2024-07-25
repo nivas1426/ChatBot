@@ -25,17 +25,20 @@ This repository contains a chatbot application using Flask and a fine-tuned Sent
 2. Install the required dependencies:
       ```bash
      pip install -r requirements.txt
-4. Set up Git LFS for handling large files:
+3. Set up Git LFS for handling large files:
       ```bash
       git lfs install
       git lfs track "output/sentence_transformer_model/model.safetensors"
       git add .gitattributes
       git commit -m "Track large files with Git LFS"
-Usage
+Usage:
+
 #Embeddings of corpus.pdf are generated and model is fine tuned with sample question answers.
+
 1) Run the Flask application:
    ```bash
     python app.py
+
 Open your web browser and go to 'http://127.0.0.1:5002' to interact with the chatbot.
 
 
