@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #2e2e2e; /* Light grey background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #chat-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        #header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fafafa;
+            margin-bottom: 20px;
+        }
+        #user-input {
+            width: calc(100% - 90px);
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        #send-btn {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #send-btn:hover {
+            background-color: #0056b3;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+        }
+        .user-message {
+            color: #007bff;
+            font-weight: 500;
+        }
+        .bot-message {
+            color: #333;
+        }
+        #notification {
+            background-color: #007bff; /* Dark blue background */
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+        }
+        #notification::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 100%;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+            animation: slide 5s linear infinite;
+        }
+        @keyframes slide {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="header">
+            <h1>Wine Chatbot</h1>
+        </div>
+        <div id="notification">
+            Welcome to Jessup Cellars
+        </div>
+        <div id="chat-box"></div>
+        <div style="display: flex;">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('send-btn').onclick = function() {
+            var userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') {
+                alert('Please enter a message.');
+                return;
+            }
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += `<div class="chat-message user-message">User: ${userInput}</div>`;
+                chatBox.innerHTML += `<div class="chat-message bot-message">Bot: ${data.response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;  // Scroll to bottom
+                document.getElementById('user-input').value = '';  // Clear input field
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error processing your request. Please try again.');
+            });
+        };
+
+        // Handle pressing Enter key to send message
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('send-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
