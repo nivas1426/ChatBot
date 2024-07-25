@@ -5,11 +5,11 @@ This repository contains a chatbot application using Flask and a fine-tuned Sent
 ## Project Structure
 
 - `app.py`: Flask application for handling chat requests.
-- `data.py`: Functions related to processing corpus.pdf into embeddings.
+- `data.py`: Functions to process corpus.pdf into embeddings.
 - `model.py`: Functions related to loading and using the Sentence Transformer model.
 - `search.py`: Search functions for querying the corpus.
 - `utils.py`: Utility functions for maintaining conversation context.
-- `model_train.py`: code related Fine tunning the model.
+- `model_train.py`: code related Fine tunning of the model.
 - `templates/index.html`: The main HTML page for the chatbot.
 - `static/`: Directory for static files such as CSS and JavaScript.
 - `data/`: Directory containing the corpus and sample question-answer pairs.
